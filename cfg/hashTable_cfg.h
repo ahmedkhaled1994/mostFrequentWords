@@ -1,6 +1,6 @@
 // Can be overridden at compile time
 #ifndef HASHTABLE_DEFAULT_CAPACITY
-#define HASHTABLE_DEFAULT_CAPACITY (512)
+#define HASHTABLE_DEFAULT_CAPACITY (1024)
 #endif
 
 #ifndef HASHTABLE_DEFAULT_MAX_LOAD_FACTOR

@@ -11,11 +11,12 @@
 typedef struct {
     const char* key;  // key is NULL if this slot is empty
     void* value;      // pointer to the value data
+    ht_entry* next;   // pointer to the next entry in case of collision (for chaining)
 } ht_entry;
 
 // Main hash table structure
 typedef struct hashTable {
-    ht_entry* entries;          // hash slots array
+    ht_entry** entries;          // hash slots array
     double max_load_factor;     // maximum load factor before resizing
     size_t capacity;            // size of entries array
     size_t length;              // number of items currently in hash table
