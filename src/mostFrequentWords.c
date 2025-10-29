@@ -11,9 +11,11 @@
 
 #include "utility.h"
 #include "mostFrequentWords.h"
+#include "hashTable.h"
 
 
 char **find_frequent_words(const char *path, int32_t n) {
+
     //create a file pointer
     FILE *fptr;
     char wordBuff[100];
@@ -23,13 +25,23 @@ char **find_frequent_words(const char *path, int32_t n) {
         return NULL;
     }
 
+    //create a freq map 
+    hashTable* freqMap = hashTable_create(NULL);
+
     while(fscanf(fptr, "%99s", wordBuff)==1){
         printf("%s,", wordBuff);
         clean_and_lowercase(wordBuff);
+        // TODO: add wordBuff to hash map
         printf("%s\n", wordBuff);
     }
 
     fclose(fptr);
+
+    //TODO: create min heap 
+
+    //delete freq map
+    hashTable_destroy(freqMap);
+
     return NULL;
 }
 
