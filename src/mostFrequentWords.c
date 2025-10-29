@@ -16,7 +16,6 @@
 char **find_frequent_words(const char *path, int32_t n) {
     //create a file pointer
     FILE *fptr;
-    //char lineBuff[100];
     char wordBuff[100];
     fptr = fopen(path, "r");
     if(fptr == NULL) {
