@@ -27,6 +27,11 @@ char **find_frequent_words(const char *path, int32_t n) {
 
     //create a freq map 
     hashTable* freqMap = hashTable_create(NULL);
+    if (freqMap == NULL) {
+        printf("Error creating hash table\n");
+        fclose(fptr);
+        return NULL;
+    }
 
     while(fscanf(fptr, "%99s", wordBuff)==1){
         printf("%s,", wordBuff);
