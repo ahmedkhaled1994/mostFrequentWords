@@ -8,10 +8,10 @@
 #define HASHTABLE_H
 
 // Hash table entry structure - represents a key-value pair
-typedef struct {
+typedef struct ht_entry{
     const char* key;  // key is NULL if this slot is empty
     void* value;      // pointer to the value data
-    ht_entry* next;   // pointer to the next entry in case of collision (for chaining)
+    struct ht_entry* next;   // pointer to the next entry in case of collision (for chaining)
 } ht_entry;
 
 // Main hash table structure

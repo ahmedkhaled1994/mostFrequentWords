@@ -6,6 +6,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 #include "hashTable_cfg.h"
 #include "hashTable.h"
 
