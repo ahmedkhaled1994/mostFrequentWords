@@ -8,20 +8,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
-void clean_and_lowercase(char *word) {
-    char *srcPtr = word;
-    char *dstPtr = word;
-    while(*srcPtr) {
-        // Check if the character is NOT punctuation
-        if (!ispunct(*srcPtr)) {
-            *dstPtr = tolower(*srcPtr);
-            dstPtr++; // Move destination pointer forward
-        }
-        srcPtr++; // Move source pointer forward
-    }
-    *dstPtr = '\0'; // Null-terminate the cleaned string
-}
+#include "utility.h"
+#include "mostFrequentWords.h"
+
+
 char **find_frequent_words(const char *path, int32_t n) {
     //create a file pointer
     FILE *fptr;

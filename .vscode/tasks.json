@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",                 // Changed from "cppdbg" to "shell"
+            "command": "gcc",
+            "args": [
+                "-g",                        // Debug symbols
+                "-Wall",
+                "-Wextra", 
+                "-std=c99",
+                "-Iinclude",                 // Include directory
+                "src/mostFrequentWords.c",
+                "src/utility.c",             // All your source files
+                "-o",
+                "mostFrequentWords.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}

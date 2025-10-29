@@ -37,7 +37,8 @@ x64/
 x86/
 
 # IDE and editor files
-.vscode/
+.vscode/settings.json
+.vscode/c_cpp_properties.json
 *.swp
 *.swo
 *~
