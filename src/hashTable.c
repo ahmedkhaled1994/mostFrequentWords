@@ -181,7 +181,7 @@ void* hashTable_insert(hashTable* ht, const char* key, const void* value) {
     return insertElement(ht, key, value, index);
 }
 
-void* hashTable_increment(hashTable* ht, const char* key) {
+void* hashTable_incrementOrInsert(hashTable* ht, const char* key) {
     // Compute the hash value for the given key
     unsigned long hashValue = hash_djb2(key);
     size_t index = hashValue % ht->capacity;
@@ -206,6 +206,13 @@ void* hashTable_increment(hashTable* ht, const char* key) {
     *initialValue = 1;
     return insertElement(ht, key, (void *)initialValue, index);
 
+}
+
+void* hashTable_updateOrInsert(hashTable* ht, const char* key, 
+                               void* defaultValue, 
+                               void* (*updateFunc)(void* existingValue)) {
+    // TODO: implement the function hashTable_updateOrInsert
+    return NULL;
 }
 /*========================================================== */
 /*==================== Private Functions =================== */
@@ -240,7 +247,10 @@ static void* insertElement (hashTable* ht, const char* key, const void* value, s
     return newEntry->value; // Return the inserted value
 }
 
-
+// TODO: update hashtable struct to add size of value (in bytes)
+// TODO: upate hastable configuration struct (and default values) \
+            to add size of value (in bytes)
+// TODO: update create function to init hashtable struct properly 
 //TODO: implement hash table resize
 // TODO: implement collision resolution (e.g., linear probing, chaining)
 // TODO: implement rehashing when load factor exceeds max_load_factor

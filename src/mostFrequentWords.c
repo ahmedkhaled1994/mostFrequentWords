@@ -36,7 +36,7 @@ char **find_frequent_words(const char *path, int32_t n) {
     while(fscanf(fptr, "%99s", wordBuff)==1){
         printf("%s,", wordBuff);
         clean_and_lowercase(wordBuff);
-        // TODO: add wordBuff to hash map
+        hashTable_incrementOrInsert(freqMap, wordBuff);
         printf("%s\n", wordBuff);
     }
 
@@ -53,6 +53,6 @@ char **find_frequent_words(const char *path, int32_t n) {
 
 int main() {
 
-    find_frequent_words("shakespeare.txt", 5);
+    find_frequent_words("test_simple.txt", 3);
     return 0;
 }

@@ -116,6 +116,28 @@ void* hashTable_lookup(hashTable* ht, const char* key);
  */
 void* hashTable_insert(hashTable* ht, const char* key, const void* value);
 
+/**
+ * Increments an integer value associated with the given key in the hash table
+ * 
+ * @param ht Pointer to the hash table
+ * @param key The key string whose associated integer value to increment
+ * 
+ * @return Pointer to the incremented integer value on success, NULL on failure
+ * 
+ * @note If the key does not exist, a new entry will be created with initial value 1
+ *       The value associated with the key must be of type int*
+ * 
+ * @example
+ *   hashTable* ht = hashTable_create(NULL);
+ *   int* value = (int*)hashTable_incrementOrInsert(ht, "counterKey");
+ *   if (value != NULL) {
+ *       // Successfully incremented, use *value
+ *   } else {
+ *       // Increment failed
+ *   }
+ */
+void* hashTable_incrementOrInsert(hashTable* ht, const char* key);
+
 void* hashTable_updateOrInsert(hashTable* ht, const char* key, 
                                void* defaultValue, 
                                void* (*updateFunc)(void* existingValue));
