@@ -38,6 +38,24 @@
  */
 static unsigned long hash_djb2(const char *str);
 
+/**
+ * @brief Inserts a new key-value pair into the hash table at the specified index
+ * 
+ * This function creates a new hash table entry for the given key and value,
+ * and inserts it into the linked list at the specified index in the hash table.
+ * 
+ * @param ht Pointer to the hash table
+ * @param key The key string (must be null-terminated)
+ * @param value Pointer to the value data
+ * @param index The index in the hash table entries array to insert into
+ * 
+ * @return Pointer to the inserted value on success, NULL on failure
+ * 
+ * @note This is a private function, only accessible within this file
+ * @note The function assumes ht and key are not NULL (caller responsibility)
+ */
+static void* insertElement (hashTable* ht, const char* key, const void* value, size_t index);
+
 /*========================================================== */
 /*==================== Public Functions ==================== */
 /*========================================================== */
@@ -119,7 +137,6 @@ void hashTable_destroy(hashTable* ht)
 }
 
 void* hashTable_lookup(hashTable* ht, const char* key) {
-    // TODO: add other hashing algorithms support
     // Compute the hash value for the given key
     unsigned long hashValue = hash_djb2(key);
     size_t index = hashValue % ht->capacity;
@@ -140,6 +157,29 @@ void* hashTable_lookup(hashTable* ht, const char* key) {
 
     return NULL; // Key not found
 }
+
+void* hashTable_insert(hashTable* ht, const char* key, const void* value) {
+    // Compute the hash value for the given key
+    unsigned long hashValue = hash_djb2(key);
+    size_t index = hashValue % ht->capacity;
+
+    //declare current entry pointer
+    ht_entry *currentEntry = ht->entries[index];
+
+    while (currentEntry != NULL) {
+
+        if (strcmp(key, currentEntry->key) == 0) 
+        {
+            // Key already exists, update the value
+            currentEntry->value = (void*)value;
+            return currentEntry->value;
+        }
+        // Move to the next entry in the linked list
+        currentEntry = currentEntry->next;
+    }
+    // Key does not exist, create a new entry
+    return insertElement(ht, key, value, index);
+}
 /*========================================================== */
 /*==================== Private Functions =================== */
 /*========================================================== */
@@ -157,10 +197,29 @@ static unsigned long hash_djb2(const char *str) {
     return hash;
 }
 
+static void* insertElement (hashTable* ht, const char* key, const void* value, size_t index) {
+    ht_entry* newEntry = (ht_entry*)malloc(sizeof(ht_entry));
+    if (newEntry == NULL) {
+        return NULL; // Memory allocation failed
+    }
+    newEntry->key = strdup(key); // Duplicate the key string
+    newEntry->value = (void*)value; // Set the value
+
+    newEntry->next = ht->entries[index]; // Insert at the beginning of the list     
+    ht->entries[index] = newEntry; // Update the head of the list
+
+    ht->length++; // Increment the number of items in the hash table
+
+    return newEntry->value; // Return the inserted value
+}
+
+// TODO: implement hash table insert 
 //TODO: implement hash table resize
 // TODO: implement collision resolution (e.g., linear probing, chaining)
 // TODO: implement rehashing when load factor exceeds max_load_factor
-// TODO: implement hash table insert 
 // TODO: implement hash table delete
 // TODO: implement public getters for length and capacity
 // TODO: revise all public API functions for error handling and edge cases
+// TODO: add other hashing algorithms support
+// TODO: restructre to have hash function is a separate module 
+// TODO: define error status codes 
