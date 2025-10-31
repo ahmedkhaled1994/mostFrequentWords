@@ -70,4 +70,54 @@ hashTable* hashTable_create(hashTable_config* config);
  */
 void hashTable_destroy(hashTable* ht);
 
+/**
+ * Looks up a value by key in the hash table
+ * 
+ * @param ht Pointer to the hash table
+ * @param key The key string to look up
+ * 
+ * @return Pointer to the value associated with the key, or NULL if not found
+ * 
+ * @note The caller should not modify or free the returned value pointer
+ * 
+ * @example
+ *   hashTable* ht = hashTable_create(NULL);
+ *   // ... insert some key-value pairs ...
+ *   void* value = hashTable_lookup(ht, "exampleKey");
+ *   if (value != NULL) {
+ *       // Key found, use value
+ *   } else {
+ *       // Key not found
+ *   }
+ */
+void* hashTable_lookup(hashTable* ht, const char* key);
+
+/**
+ * Inserts or updates a key-value pair in the hash table
+ * 
+ * @param ht Pointer to the hash table
+ * @param key The key string to insert or update
+ * @param value Pointer to the value data to associate with the key
+ * 
+ * @return Pointer to the inserted/updated value on success, NULL on failure
+ * 
+ * @note If the key already exists, its value will be updated to the new value
+ *       If the key does not exist, a new entry will be created
+ * 
+ * @example
+ *   hashTable* ht = hashTable_create(NULL);
+ *   int data = 42;
+ *   void* result = hashTable_insert(ht, "exampleKey", &data);
+ *   if (result != NULL) {
+ *       // Insert/update successful
+ *   } else {
+ *       // Insert/update failed
+ *   }
+ */
+void* hashTable_insert(hashTable* ht, const char* key, const void* value);
+
+void* hashTable_updateOrInsert(hashTable* ht, const char* key, 
+                               void* defaultValue, 
+                               void* (*updateFunc)(void* existingValue));
+
 #endif /* HASHTABLE_H */
