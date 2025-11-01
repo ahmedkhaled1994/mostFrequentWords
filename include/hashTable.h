@@ -28,6 +28,13 @@ typedef struct {
     double max_load_factor;     // load factor threshold for resizing
 } hashTable_config;
 
+//iterator struct 
+typedef struct {
+    hashTable* ht;              // pointer to the hash table being iterated
+    size_t current_index;       // current index in the entries array
+    ht_entry* current_entry;    // current entry in the linked list at current index
+} hashTable_iterator;
+
 /**
  * Creates a new hash table with the specified configuration
  * 
@@ -142,4 +149,73 @@ void* hashTable_updateOrInsert(hashTable* ht, const char* key,
                                void* defaultValue, 
                                void* (*updateFunc)(void* existingValue));
 
+/**
+ * @brief Initializes a hash table iterator to traverse all key-value pairs
+ * 
+ * This function prepares an iterator for traversing all entries in the hash table.
+ * After initialization, the iterator is positioned at the first valid entry if one exists.
+ * 
+ * @param ht Pointer to the hash table to iterate over. Must not be NULL.
+ * @param iter Pointer to the iterator structure to initialize. Must not be NULL.
+ * 
+ * @note After calling this function, use hashTable_iteratorNext() to retrieve entries
+ * @note If the hash table is empty, the iterator will be in a valid but finished state
+ * @note The iterator becomes invalid if the hash table is modified during iteration
+ * 
+ * @warning The hash table must remain valid for the entire duration of iteration
+ * @warning Do not modify the hash table while iterating (undefined behavior)
+ * 
+ * @example
+ *   hashTable* ht = hashTable_create(NULL);
+ *   // ... insert some entries ...
+ *   
+ *   hashTable_iterator iter;
+ *   hashTable_initIterator(ht, &iter);
+ *   
+ *   const char* key;
+ *   void* value;
+ *   while (hashTable_iteratorNext(&iter, &key, &value)) {
+ *       printf("Key: %s\n", key);
+ *   }
+ */
+void hashTable_initIterator(hashTable* ht, hashTable_iterator* iter);
+
+/**
+ * @brief Retrieves the next key-value pair from the hash table iterator
+ * 
+ * This function advances the iterator to the next entry and returns the key-value pair.
+ * The iteration order is not guaranteed and depends on the internal hash table structure.
+ * 
+ * @param iter Pointer to the iterator structure. Must not be NULL.
+ * @param key Pointer to store the key string pointer. Must not be NULL.
+ * @param value Pointer to store the value pointer. Must not be NULL.
+ * 
+ * @return true if a valid entry was retrieved, false if no more entries exist
+ * 
+ * @note The returned key and value pointers are valid until the hash table is modified
+ * @note Do not free or modify the returned key pointer
+ * @note The value pointer points to the actual stored data
+ * @note Call this function repeatedly until it returns false to traverse all entries
+ * 
+ * @warning The iterator becomes invalid if the hash table is modified during iteration
+ * @warning The returned pointers become invalid if the hash table is destroyed or modified
+ * 
+ * @example
+ *   hashTable_iterator iter;
+ *   hashTable_initIterator(freqMap, &iter);
+ *   
+ *   const char* word;
+ *   void* countPtr;
+ *   while (hashTable_iteratorNext(&iter, &word, &countPtr)) {
+ *       int count = *(int*)countPtr;
+ *       printf("Word: '%s', Count: %d\n", word, count);
+ *   }
+ */
+bool hashTable_iteratorNext(hashTable_iterator* iter, const char** key, void** value);
+
 #endif /* HASHTABLE_H */
+
+
+// TODO: create hashtable iterator struct 
+// TODO: add functions to initialize and get next key-value pair
+// TODO: review struct documentation following doxygen 

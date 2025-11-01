@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #include "utility.h"
 #include "mostFrequentWords.h"
@@ -34,13 +35,23 @@ char **find_frequent_words(const char *path, int32_t n) {
     }
 
     while(fscanf(fptr, "%99s", wordBuff)==1){
-        printf("%s,", wordBuff);
+        //printf("%s,", wordBuff);
         clean_and_lowercase(wordBuff);
         hashTable_incrementOrInsert(freqMap, wordBuff);
-        printf("%s\n", wordBuff);
+        //printf("%s\n", wordBuff);
     }
 
     fclose(fptr);
+
+    hashTable_iterator freqMapItr;
+    hashTable_initIterator(freqMap, &freqMapItr);
+
+    const char* key;
+    void* value;
+    while (hashTable_iteratorNext(&freqMapItr, &key, &value)) {
+        int count = *(int*)value;
+        printf("Word: %s, Count: %d\n", key, count);
+    }
 
     //TODO: create min heap 
 
@@ -53,6 +64,10 @@ char **find_frequent_words(const char *path, int32_t n) {
 
 int main() {
 
-    find_frequent_words("test_simple.txt", 3);
+    // find_frequent_words("test_simple.txt", 3);
+    // find_frequent_words("test_punctuation.txt", 3);
+    // find_frequent_words("test_ties.txt", 3);
+    // find_frequent_words("test_large.txt", 3);
+    find_frequent_words("shakespeare.txt", 3);
     return 0;
 }

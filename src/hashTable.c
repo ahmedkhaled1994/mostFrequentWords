@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "hashTable_cfg.h"
 #include "hashTable.h"
 
@@ -214,6 +215,55 @@ void* hashTable_updateOrInsert(hashTable* ht, const char* key,
     // TODO: implement the function hashTable_updateOrInsert
     return NULL;
 }
+
+void hashTable_initIterator(hashTable* ht, hashTable_iterator* iter) {
+    iter->ht = ht;
+    iter->current_index = 0;
+    iter->current_entry = NULL;
+
+    // Advance to the first non-empty entry
+    while (iter->current_index < ht->capacity) {
+        if (ht->entries[iter->current_index] != NULL) {
+            iter->current_entry = ht->entries[iter->current_index];
+            break;
+        }
+        //empty entry, move to next index
+        iter->current_index++;
+    }
+
+}
+
+bool hashTable_iteratorNext(hashTable_iterator* iter, const char** key, void** value) {
+    // Check if current entry is valid
+    if (iter->current_entry == NULL) {
+        return false; // No more entries
+    }
+    
+    // Return the current key-value pair
+    *key = iter->current_entry->key;
+    *value = iter->current_entry->value;
+
+    // Move to the next entry in the linked list
+    iter->current_entry = iter->current_entry->next;
+
+    // If the end of the linked list is reached, move to the next index
+    if (iter->current_entry == NULL) {
+        iter->current_index++;
+        while (iter->current_index < iter->ht->capacity && 
+               iter->ht->entries[iter->current_index] == NULL) {
+            iter->current_index++;
+        }
+        if (iter->current_index < iter->ht->capacity) {
+            iter->current_entry = iter->ht->entries[iter->current_index];
+        }
+        else {
+            //do nothing, keep current_entry as NULL to indicate end
+        }
+    }
+
+    return true; // Successfully returned a key-value pair
+}
+
 /*========================================================== */
 /*==================== Private Functions =================== */
 /*========================================================== */
