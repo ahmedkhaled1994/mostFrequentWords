@@ -76,7 +76,13 @@ char **find_frequent_words(const char *path, int32_t n) {
         result[i] = strdup(wordCountArray[i].word);
         //printf("Top %d: %s (Count: %d)\n", i + 1, result[i], wordCountArray[i].count);
     }
+    //free word count array
+    for (size_t j = 0; j < length; j++) {
+        free(wordCountArray[j].word);
+    }
+    free(wordCountArray);
 
+    //TODO: profile current execution time and memory 
     //TODO: create min heap 
 
     //delete freq map
