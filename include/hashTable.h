@@ -213,6 +213,25 @@ void hashTable_initIterator(hashTable* ht, hashTable_iterator* iter);
  */
 bool hashTable_iteratorNext(hashTable_iterator* iter, const char** key, void** value);
 
+/**
+ * @brief Retrieves the number of key-value pairs currently stored in the hash table
+ * 
+ * This function returns the current size (length) of the hash table, which represents
+ * the number of key-value pairs stored in it.
+ * 
+ * @param ht Pointer to the hash table. Must not be NULL.
+ * 
+ * @return The number of key-value pairs in the hash table
+ * 
+ * @example
+ *   hashTable* ht = hashTable_create(NULL);
+ *   // ... insert some entries ...
+ *   size_t length = hashTable_getLength(ht);
+ *   printf("Hash table length: %zu\n", length);
+ */
+size_t hashTable_getLength(hashTable* ht);
+
+
 #endif /* HASHTABLE_H */
 
 

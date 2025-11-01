@@ -269,6 +269,10 @@ bool hashTable_iteratorNext(hashTable_iterator* iter, const char** key, void** v
     return true; // Successfully returned a key-value pair
 }
 
+size_t hashTable_getLength(hashTable* ht) {
+    return ht->length;
+}
+
 /*========================================================== */
 /*==================== Private Functions =================== */
 /*========================================================== */
@@ -307,12 +311,11 @@ static void* insertElement (hashTable* ht, const char* key, const void* value, s
             to add size of value (in bytes)
 // TODO: update create function to init hashtable struct properly 
 //TODO: implement hash table resize
-// TODO: implement collision resolution (e.g., linear probing, chaining)
 // TODO: implement rehashing when load factor exceeds max_load_factor
 // TODO: implement hash table delete
 // TODO: implement public getters for length and capacity
 // TODO: revise all public API functions for error handling and edge cases
-// TODO: add other hashing algorithms support
+// TODO: add other hashing algorithms support (sdbm, FNV-1a, etc.)
 // TODO: restructre to have hash function is a separate module 
 // TODO: define error status codes 
 // TODO: make sure all files have copyright notice
