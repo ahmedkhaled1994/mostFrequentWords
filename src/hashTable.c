@@ -120,14 +120,19 @@ void hashTable_destroy(hashTable* ht)
     // Iterate through all slots in the hash table
     for (size_t i = 0; i < ht->capacity; i++) {
         ht_entry* entry = ht->entries[i];
-        // TODO: revise after linked list implementation for collision resolution
-        if (entry != NULL) {
+        ht_entry* next;
+        // Free all entries in the linked list at this slot
+        while (entry != NULL) {
+            // Store pointer to next entry
+            next = entry->next; 
             // Free the key string if dynamically allocated
             free((void*)entry->key);
             // Free the value pointer if dynamically allocated
             free(entry->value);
             // Free the entry structure itself
             free(entry);
+            // Move to the next entry
+            entry = next; 
         }
     }
 
